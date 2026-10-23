@@ -102,13 +102,13 @@ export default function Navbar() {
                       </span>
                     )}
                     <span className="hidden font-semibold text-gray-800 sm:inline">
-                      {session.user.name}
+                      {session.user.name?.split(" ")[0]}
                     </span>
                     <span className="text-xs text-gray-500">▾</span>
                   </div>
                   <ul
                     tabIndex={0}
-                    className="dropdown-content menu z-50 w-56 rounded-box border bg-white p-2 shadow-lg"
+                    className="dropdown-content menu z-50 w-64 rounded-2xl border border-gray-100 bg-white p-2 shadow-lg"
                   >
                     <li className="px-3 py-2">
                       <span className="flex flex-col items-start gap-0 hover:bg-transparent">

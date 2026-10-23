@@ -1,0 +1,164 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import toast from "react-hot-toast";
+import { signIn } from "@/lib/auth-client";
+
+const inputClass =
+  "w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 transition placeholder:text-gray-400 hover:border-green-400 focus:border-green-500 focus:ring-2 focus:ring-green-100 focus:outline-none";
+
+export default function SignInForm() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    const { error } = await signIn.email({
+      email,
+      password,
+      callbackURL: callbackUrl,
+    });
+    setLoading(false);
+    if (error) {
+      toast.error("ইমেইল বা পাসওয়ার্ড ভুল হয়েছে। আবার চেষ্টা করুন।");
+    } else {
+      toast.success("সাইন ইন সফল!");
+      router.push(callbackUrl);
+      router.refresh();
+    }
+  };
+
+  const handleSocial = async (provider: "google" | "github") => {
+    await signIn.social({ provider, callbackURL: callbackUrl });
+  };
+
+  return (
+    <div className="w-full max-w-lg">
+      <h1 className="text-center text-3xl font-bold text-gray-900">সাইন ইন</h1>
+      <p className="mt-2 mb-6 text-center text-sm text-gray-500">
+        বিস্তারিত দাম, বাজার তুলনা ও প্রোফাইল দেখতে অ্যাকাউন্টে ঢুকুন।
+      </p>
+
+      <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8">
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label
+              htmlFor="email"
+              className="mb-1.5 block text-sm font-semibold text-gray-800"
+            >
+              ইমেইল
+            </label>
+            <input
+              id="email"
+              type="email"
+              placeholder="you@example.com"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className={inputClass}
+            />
+          </div>
+
+          <div className="mb-6">
+            <label
+              htmlFor="password"
+              className="mb-1.5 block text-sm font-semibold text-gray-800"
+            >
+              পাসওয়ার্ড
+            </label>
+            <input
+              id="password"
+              type="password"
+              placeholder="কমপক্ষে ৮ অক্ষর"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className={inputClass}
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full rounded-xl bg-green-700 py-3 text-sm font-semibold text-white transition hover:bg-green-800 disabled:opacity-60"
+          >
+            {loading ? (
+              <span className="loading loading-spinner loading-sm"></span>
+            ) : (
+              "সাইন ইন"
+            )}
+          </button>
+        </form>
+
+        <div className="divider my-5 text-xs text-gray-400">অথবা</div>
+
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <button
+            type="button"
+            onClick={() => handleSocial("google")}
+            className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-[13px] font-semibold text-gray-800 transition hover:border-green-400"
+          >
+            <svg className="h-5 w-5 shrink-0" viewBox="0 0 24 24">
+              <path
+                fill="#4285F4"
+                d="M23.5 12.27c0-.85-.08-1.66-.22-2.45H12v4.64h6.45a5.52 5.52 0 0 1-2.4 3.58v2.97h3.88c2.27-2.09 3.57-5.17 3.57-8.74z"
+              />
+              <path
+                fill="#34A853"
+                d="M12 24c3.24 0 5.96-1.07 7.94-2.91l-3.88-2.97c-1.08.72-2.45 1.15-4.06 1.15-3.12 0-5.77-2.11-6.71-4.95H1.28v3.06A11.99 11.99 0 0 0 12 24z"
+              />
+              <path
+                fill="#FBBC05"
+                d="M5.29 14.32A7.2 7.2 0 0 1 4.91 12c0-.81.14-1.59.38-2.32V6.62H1.28a12 12 0 0 0 0 10.76l4.01-3.06z"
+              />
+              <path
+                fill="#EA4335"
+                d="M12 4.73c1.76 0 3.35.61 4.6 1.8l3.44-3.44A11.98 11.98 0 0 0 12 0 11.99 11.99 0 0 0 1.28 6.62l4.01 3.06C6.23 6.84 8.88 4.73 12 4.73z"
+              />
+            </svg>
+            Google দিয়ে চালিয়ে যান
+          </button>
+          <button
+            type="button"
+            onClick={() => handleSocial("github")}
+            className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-[13px] font-semibold text-gray-800 transition hover:border-green-400"
+          >
+            <svg className="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="#181717">
+              <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+            </svg>
+            GitHub দিয়ে চালিয়ে যান
+          </button>
+        </div>
+
+        <p className="mt-6 text-center text-sm text-gray-500">
+          অ্যাকাউন্ট নেই?{" "}
+          <Link
+            href={
+              callbackUrl !== "/"
+                ? `/signup?callbackUrl=${encodeURIComponent(callbackUrl)}`
+                : "/signup"
+            }
+            className="font-semibold text-green-700"
+          >
+            সাইন আপ করুন
+          </Link>
+        </p>
+      </div>
+
+      <Link
+        href="/"
+        className="mt-6 block text-center text-sm text-gray-500 transition hover:text-green-700"
+      >
+        ← হোম পেজে ফিরে যান
+      </Link>
+    </div>
+  );
+}
