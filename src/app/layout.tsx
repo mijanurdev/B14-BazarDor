@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Hind_Siliguri } from "next/font/google";
+import { Toaster } from "react-hot-toast";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import "./globals.css";
 
 const hindSiliguri = Hind_Siliguri({
@@ -19,8 +22,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="bn" data-theme="light">
-      <body className={`${hindSiliguri.className} antialiased`}>
-        {children}
+      <body
+        className={`${hindSiliguri.className} antialiased bg-[#f3f7f3] text-gray-900`}
+      >
+        <Navbar />
+        <main className="min-h-screen">{children}</main>
+        <Footer />
+        <Toaster position="top-center" />
       </body>
     </html>
   );
