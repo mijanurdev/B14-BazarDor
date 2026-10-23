@@ -102,26 +102,37 @@ export default function ProfileContent() {
         আপনার অ্যাকাউন্টের তথ্য এখানে দেখুন।
       </p>
 
-      <div className="mt-8 flex items-center gap-5 rounded-3xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8">
-        {user.image ? (
-          <img
-            src={user.image}
-            alt={user.name || "প্রোফাইল"}
-            className="h-24 w-24 shrink-0 rounded-2xl object-cover"
-          />
-        ) : (
-          <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl bg-green-700 text-4xl font-bold text-white">
-            {user.name?.charAt(0) || "U"}
+      <div className="mt-8 flex flex-col gap-4 rounded-3xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8 lg:flex-row lg:items-center">
+        <div className="flex items-center gap-5">
+          {user.image ? (
+            <img
+              src={user.image}
+              alt={user.name || "প্রোফাইল"}
+              className="h-24 w-24 shrink-0 rounded-full bg-green-50 object-cover"
+            />
+          ) : (
+            <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-full bg-green-50">
+              <svg
+                viewBox="0 0 448 512"
+                className="h-14 w-14 text-green-700"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z" />
+              </svg>
+            </div>
+          )}
+          <div className="min-w-0">
+            <p className="truncate text-2xl font-bold text-gray-900">
+              {user.name}
+            </p>
+            <p className="mt-1 truncate text-gray-500">{user.email}</p>
           </div>
-        )}
-        <div className="min-w-0">
-          <p className="truncate text-2xl font-bold text-gray-900">{user.name}</p>
-          <p className="mt-1 truncate text-gray-500">{user.email}</p>
         </div>
         <button
           type="button"
           onClick={handleSignOut}
-          className="ml-auto shrink-0 rounded-xl border border-red-300 px-4 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50"
+          className="shrink-0 self-start rounded-xl border border-red-300 px-4 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50 lg:ml-auto lg:self-center"
         >
           ↩ সাইন আউট
         </button>

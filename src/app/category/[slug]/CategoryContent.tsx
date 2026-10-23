@@ -77,7 +77,7 @@ export default function CategoryContent({
     <>
       <div className="mb-4 rounded-2xl bg-white p-5 shadow-sm">
         <div className="flex items-center gap-3">
-          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-green-50 text-4xl">
+          <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-green-50 text-4xl">
             {category?.icon}
           </span>
           <div>
@@ -91,15 +91,16 @@ export default function CategoryContent({
         </div>
       </div>
 
-      <div className="mb-4 flex items-center justify-end rounded-xl bg-white px-4 py-3 shadow-sm">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-xl bg-white px-4 py-3 shadow-sm">
+        {!loading && products.length > 0 ? (
+          <p className="text-sm text-gray-500">
+            মোট {toBengaliNumber(products.length)}টি পণ্য দেখানো হচ্ছে
+          </p>
+        ) : (
+          <span></span>
+        )}
         <SortDropdown value={sortBy} onChange={setSortBy} />
       </div>
-
-      {!loading && products.length > 0 && (
-        <p className="mb-4 text-sm text-gray-500">
-          মোট {toBengaliNumber(products.length)}টি পণ্য দেখানো হচ্ছে
-        </p>
-      )}
 
       {loading ? (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
