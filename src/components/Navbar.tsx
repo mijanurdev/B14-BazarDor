@@ -138,13 +138,13 @@ export default function Navbar() {
                 <>
                   <Link
                     href="/signin"
-                    className="btn btn-outline btn-sm sm:btn-md"
+                    className="btn btn-outline btn-sm rounded-xl sm:btn-md"
                   >
                     সাইন ইন
                   </Link>
                   <Link
                     href="/signup"
-                    className="btn btn-sm border-none bg-green-700 text-white sm:btn-md"
+                    className="btn btn-sm rounded-xl border-none bg-green-700 text-white sm:btn-md"
                   >
                     সাইন আপ
                   </Link>
